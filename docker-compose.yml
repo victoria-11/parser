@@ -1,0 +1,50 @@
+version: '3.3'
+
+networks:
+    csv_parser:
+
+services:
+    php-fpm:
+        build:
+            context: ./php
+        volumes:
+            - ./src:/var/www/html
+        depends_on:
+            - db
+        networks:
+            - csv_parser
+
+    web:
+        image: nginx
+        volumes:
+            - ./default.conf:/etc/nginx/conf.d/default.conf
+            - ./src:/var/www/html
+        ports:
+            - 8080:80
+        links:
+            - php-fpm
+        networks:
+            - csv_parser
+
+    db:
+        container_name: postgres
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: secret
+            POSTGRES_DB: parser
+            POSTGRES_USER: dev
+        volumes:
+            - ./dump:/docker-entrypoint-initdb.d
+        ports:
+            - 6033:3306
+        networks:
+            - csv_parser
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8765:8080
+        networks:
+            - csv_parser
