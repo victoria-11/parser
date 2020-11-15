@@ -17,7 +17,7 @@ class CsvParsing implements ScriptInterface {
 
     protected Medoo $db;
 
-    protected int $chunksCount = 5000;
+    protected int $chunksCount = 3000;
 
     public function __construct(string $filePath, Medoo $db) {
         $this->parser = new CsvParser();
