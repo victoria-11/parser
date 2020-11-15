@@ -8,19 +8,9 @@ use Medoo\Medoo;
 use Scripts\CsvParsing;
 
 function init() {
-    $filePath = __DIR__ . '/test1.csv';
+    $filePath = __DIR__ . '/test.csv';
 
     $db = initDB();
-
-    $db->insert('users', [
-        'full_name' => 'full_name',
-        'phone' => 'phone',
-        'category_id' => '1',
-        'days' => 'пн',
-        'date_of_birth' => '01.01.1950',
-    ]);
-    print_r($db->error());
-    die;
 
     $script = new CsvParsing($filePath, $db);
 
